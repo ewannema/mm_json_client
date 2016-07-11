@@ -13,6 +13,8 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/ewannema/mm_json_client'
   spec.license       = 'MIT'
 
+  spec.required_ruby_version = '>= 2.0.0'
+
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
   # delete this section to allow pushing this gem to any host.
   if spec.respond_to?(:metadata)
@@ -26,14 +28,14 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_development_dependency 'bundler', '~> 1.10'
-  spec.add_development_dependency 'guard-rspec'
-  spec.add_development_dependency 'nokogiri', '~> 1.6'
-  spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rubocop'
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'simplecov'
   spec.add_development_dependency 'vcr'
-  spec.add_development_dependency 'wasabi'
   spec.add_development_dependency 'webmock'
+  # Wasabi requires httpi which requires rack which is pulling 2.0+ and breaks
+  # on < 2.2 Rubies. We will require a compatible rack for now and come back
+  # to check on https://github.com/bundler/bundler/pull/4650
+  spec.add_development_dependency 'wasabi'
+  spec.add_development_dependency 'rack', '~>1.6'
 end
