@@ -5,8 +5,8 @@ describe MmJsonClient::Enums::EnumFactory do
   let(:enum_factory_class) { MmJsonClient::Enums::EnumFactory }
 
   after(:each) do
-    if MmJsonClient.const_defined?(:TestEnum)
-      MmJsonClient.send(:remove_const, :TestEnum)
+    if MmJsonClient::Enums.const_defined?(:TestEnum)
+      MmJsonClient::Enums.send(:remove_const, :TestEnum)
     end
   end
 

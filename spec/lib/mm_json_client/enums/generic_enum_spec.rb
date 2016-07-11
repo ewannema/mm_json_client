@@ -11,8 +11,8 @@ describe MmJsonClient::Enums::GenericEnum do
   end
 
   after(:each) do
-    if MmJsonClient.const_defined?(:TestEnum)
-      MmJsonClient.instance_eval { remove_const(:TestEnum) }
+    if MmJsonClient::Enums.const_defined?(:TestEnum)
+      MmJsonClient::Enums.send(:remove_const, :TestEnum)
     end
   end
 

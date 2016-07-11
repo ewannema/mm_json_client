@@ -7,13 +7,13 @@ describe MmJsonClient::GenericType do
       property 'name'
       property 'relationships'
     end
-    MmJsonClient.const_set 'TestClass', klass
+    MmJsonClient.const_set 'TestType', klass
     @subject = klass.new
   end
 
   after(:each) do
-    if MmJsonClient.const_defined?(:TestClass)
-      MmJsonClient.instance_eval { remove_const(:TestClass) }
+    if MmJsonClient.const_defined?(:TestType)
+      MmJsonClient.send(:remove_const, :TestType)
     end
   end
 
