@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ewannema/mm_json_client.svg?branch=master)](https://travis-ci.org/ewannema/mm_json_client)
+
 # MmJsonClient
 
 The MmJsonClient gem is used to access the Men and Mice IPAM API using the
