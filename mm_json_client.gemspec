@@ -28,7 +28,10 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  # Force listen (required by guard) to be a Ruby 2.0.0 compatible version.
   spec.add_development_dependency 'guard-rspec'
+  spec.add_development_dependency 'listen', '~> 2.0'
+
   spec.add_development_dependency 'rake', '~> 11.0'
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'rubocop'
