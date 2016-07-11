@@ -1,0 +1,74 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://test-ipam.local/_mmwebext/mmwebext.dll?Soap
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","method":"Login","params":{"loginName":"testuser","password":"testpass","server":"test-ipam.local"}}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Length:
+      - '76'
+      Content-Type:
+      - application/json; charset=utf-8
+      Server:
+      - Microsoft-IIS/8.5
+      X-Powered-By:
+      - ASP.NET
+      Date:
+      - Mon, 11 Jul 2016 17:56:32 GMT
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc": "2.0", "result": {"session":"bsvh5S2kLC5Q9gnPbfYM"}, "id":
+        null}'
+    http_version: 
+  recorded_at: Mon, 11 Jul 2016 17:56:34 GMT
+- request:
+    method: post
+    uri: http://test-ipam.local/_mmwebext/mmwebext.dll?Soap
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","method":"Logout","params":{"session":"bsvh5S2kLC5Q9gnPbfYM"}}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Length:
+      - '44'
+      Content-Type:
+      - application/json; charset=utf-8
+      Server:
+      - Microsoft-IIS/8.5
+      X-Powered-By:
+      - ASP.NET
+      Date:
+      - Mon, 11 Jul 2016 17:56:37 GMT
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc": "2.0", "result": "", "id": null}'
+    http_version: 
+  recorded_at: Mon, 11 Jul 2016 17:56:40 GMT
+recorded_with: VCR 3.0.3
