@@ -61,6 +61,10 @@ describe MmJsonClient::GenericType do
   end
 
   describe 'basic server interaction', :vcr do
+    it 'rejects arguments that are not a hash' do
+      expect { client.get_user('foo') }.to raise_error(ArgumentError)
+    end
+
     it 'allows a user to log in and out' do
       expect(client.login).to eq(true)
       expect(client.logout).to eq(true)

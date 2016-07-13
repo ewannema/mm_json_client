@@ -107,6 +107,9 @@ module MmJsonClient
         ruby_method = method.mm_underscore
         class_eval do
           define_method(ruby_method) do |args = {}|
+            unless args.class == Hash
+              raise ArgumentError, 'argument must be a hash'
+            end
             generic_request(method, args, return_type)
           end
         end
