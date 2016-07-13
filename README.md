@@ -25,14 +25,44 @@ client.login
 
 Optional parameters to ```Client.new``` are:
 
-| Parameter   | Values     | Purpose |
-| ----------- | ---------- | ------- |
-|ssl:         | true/false | Use SSL for the connection. Defaults to false.|
-|proxy:       | string     | The M&M API server. Defaults to the same as the server: parameter. |
-|port:        | integer    | The TCP port for the connection. Defaults to 80 or 443 if SSL is enabled. |
-|verify\_ssl:  | true/false | Whether to validate SSL certificates. Defaults to true.|
+| Parameter    | Values     | Purpose |
+| -----------  | ---------- | ------- |
+|endpoint:     | string     | The URI for the web service. Defaults to /_mmwebext/mmwebext.dll?Soap. |
 |open\_timeout:| integer    | Seconds to wait for the initial connection to time out. Defaults to 10.|
+|port:         | integer    | The TCP port for the connection. Defaults to 80 or 443 if SSL is enabled. |
+|proxy:        | string     | The M&M API server. Defaults to the same as the server: parameter. |
+|ssl:          | true/false | Use SSL for the connection. Defaults to false.|
+|verify\_ssl:  | true/false | Whether to validate SSL certificates. Defaults to true.|
 
+### Advanced Connection Setup
+
+The client can optionally take an array of servers for the ```proxy:```
+parameter. This allows you to have redundant API servers without a load
+balancer.
+
+This also allows you to handle the case where the web server is running
+on the same servers as the Central service in a cluster configuration.
+This is important, because in this architecture the web component
+connects to the local server instead of using the DNS round robin entry
+and if you pick the inactive server then you will receive an error about
+operations being disabled.
+
+```ruby
+# When you have multiple web servers that are not behind a load balancer.
+client = MmJsonClient::Client.new(proxy: ['my-ipam01.example.com',
+                                          'my-ipam02.example.com'],
+                                  server: 'ipam-cluster-name.example.com',
+                                  username: 'demo',
+                                  password: 'demo')
+
+# When you have the web role on the M&M central servers in a cluster and need
+# to make sure you can connect to a functioning one.
+client = MmJsonClient::Client.new(proxy: ['my-ipam01.example.com',
+                                          'my-ipam02.example.com'],
+                                  server: 'localhost',
+                                  username: 'demo',
+                                  password: 'demo')
+```
 
 ### Case Conversion
 
@@ -102,6 +132,8 @@ MmJsonClient::Enums::AuthenticationType.values
 ```
 
 ### Learning and Exploration
+
+There are some [examples](examples/) in this repository.
 
 Check out the SOAP API docs on your server. Although this gem is using the
 JSON-RPC API, the methods, types, enumerations and responses are the same.

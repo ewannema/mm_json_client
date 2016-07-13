@@ -1,5 +1,6 @@
 require 'mm_json_client/exceptions'
 require 'mm_json_client/json_rpc_http/client'
+require 'mm_json_client/response_code'
 
 module MmJsonClient
   # The entry point for using the API client.
@@ -11,19 +12,31 @@ module MmJsonClient
       raise ArgumentError, arg_errors.join(', ') unless arg_errors.empty?
       @options = calculate_options(args)
       @session_id = nil
-      @rpc_client =
-        MmJsonClient::JsonRpcHttp::Client.new(base_url(@options),
-                                              '/_mmwebext/mmwebext.dll?Soap',
-                                              @options)
     end
 
     def login
-      login_params = { login_name: @options[:username],
-                       password: @options[:password],
-                       server: @options[:server] }
-      response = generic_request('Login', login_params, 'LoginResponse', false)
-      @session_id = response.session
-      true
+      @options[:proxy].each do |proxy|
+        begin
+          @rpc_client = JsonRpcHttp::Client.new(base_url(proxy, @options),
+                                                @options)
+          response = generic_request('Login', login_params, 'LoginResponse', false)
+          @session_id = response.session
+          return true
+        rescue MmJsonClient::ServerError => e
+          raise e unless e.code == MmJsonClient::ResponseCode::REQUESTS_DISABLED
+        rescue SocketError, Net::OpenTimeout, Net::HTTPServerError
+          # Keep trying the next server.
+        end
+
+      end
+
+      if @session_id.nil?
+        # We got here without a successful connection. Time to give up.
+        raise MmJsonClient::ServerConnectionError,
+          'Unable to connect to the proxy.'
+      else
+        true
+      end
     end
 
     def logout
@@ -49,6 +62,14 @@ module MmJsonClient
 
     private
 
+    def login_params
+      {
+        login_name: @options[:username],
+        password: @options[:password],
+        server: @options[:server]
+      }
+    end
+
     def generic_request(method, arguments, response_type, authenticated = true)
       response = request(method, client_objects_to_h(arguments), authenticated)
       if response.error
@@ -73,6 +94,7 @@ module MmJsonClient
       options = defaults.merge(args)
       # Default the proxy to the central server if not specified.
       options[:proxy] = options[:server] if options[:proxy].nil?
+      options[:proxy] = [options[:proxy]] unless options[:proxy].class == Array
       options
     end
 
@@ -93,6 +115,7 @@ module MmJsonClient
 
     def defaults
       {
+        endpoint: '/_mmwebext/mmwebext.dll?Soap',
         ssl: false,
         verify_ssl: true,
         open_timeout: 10
@@ -111,10 +134,10 @@ module MmJsonClient
       end
     end
 
-    def base_url(options)
+    def base_url(proxy, options)
       url = 'http'
       url += 's' if options[:ssl]
-      url += "://#{options[:proxy]}"
+      url += "://#{proxy}"
       url += ":#{options[:port]}" if options[:port]
       url
     end

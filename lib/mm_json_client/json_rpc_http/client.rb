@@ -6,10 +6,9 @@ module MmJsonClient
   module JsonRpcHttp
     # A helper client for doing JSON-RPC calls over http.
     class Client
-      def initialize(base_url, _endpoint, options = {})
+      def initialize(base_url, options = {})
         @http_client =
-          MmJsonClient::HttpClient::Client.new(base_url,
-                                               '/_mmwebext/mmwebext.dll?Soap',
+          MmJsonClient::HttpClient::Client.new(base_url, options[:endpoint],
                                                allowed_client_options(options))
       end
 
