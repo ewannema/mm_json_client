@@ -5,7 +5,7 @@ module MmJsonClient
     attr_reader :message
 
     def initialize(code, message)
-      @code = code
+      @code = code.to_i
       @message = message
     end
 
@@ -17,4 +17,7 @@ module MmJsonClient
       message
     end
   end
+
+  # Could not connect to the server for what could be a transient reason.
+  class ServerConnectionError < StandardError; end
 end

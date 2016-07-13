@@ -138,4 +138,26 @@ describe MmJsonClient::GenericType do
       expect(client.login).to eq(true)
     end
   end
+
+  describe 'multiple proxy servers', :vcr do
+    it 'connects to another proxy when one is disabled' do
+      client = MmJsonClient::Client.new(proxy: ['test-ipam02.local',
+                                                'test-ipam01.local'],
+                                        server: 'localhost',
+                                        username: 'testuser',
+                                        password: 'testpass')
+
+      expect(client.login).to eq(true)
+    end
+
+    # TODO: VCR isn't recording connection failures. Need to investigate.
+    # it 'connects to another proxy when the connection to one times out' do
+      # client = MmJsonClient::Client.new(proxy: ['172.16.56.100',
+      #                                           'test-ipam01.local'],
+      #                                   server: 'localhost',
+      #                                   username: 'testuser',
+      #                                   password: 'testpass')
+
+      # expect(client.login).to eq(true)
+  end
 end
