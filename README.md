@@ -5,11 +5,18 @@
 The MmJsonClient gem is used to access the Men and Mice IPAM API using the
 JSON-RPC format that was first made available in version 6.6.
 
+## API Versions ##
 In order to minimize run time dependencies this gem includes API definition
 files that define the enumerations, methods and types available when using the
-gem. The API definition has been built from the version 7.1.5 WSDL so methods
-available in your installation may differ slightly. Instructions will be coming
-on how to build your own API definition files and use them instead.
+gem.
+
+Different versions of this gem support different versions of the API by default.
+See [API Definitions](api_definitions.md) for more information.
+
+| Gem Version | Default API Version |
+| ----------- | ------------------- |
+| 0.x         | 7.x                 |
+| 2.x         | 9.x                 |
 
 ## Usage
 
