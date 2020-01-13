@@ -84,5 +84,19 @@ describe MmJsonClient::TypeFactory do
       planet_names = subject.favorite_planets.map(&:name).sort
       expect(planet_names).to eq(%w(earth mars))
     end
+
+    it 'ignores attributes not in the API spec' do
+      type_factory.load_types('TestType' => { 'name' => 'string',
+                                              'home_planet' => 'string' })
+
+      subject =
+        type_factory.build_from_data('TestType', 'name' => 'The Tick',
+                                                 'home_planet' => 'Earth',
+                                                 'weakness' => 'shiny objects')
+
+      expect(subject.name).to eq('The Tick')
+      expect(subject.home_planet).to eq('Earth')
+      expect{subject.weakness}.to raise_error(NoMethodError)
+    end
   end
 end

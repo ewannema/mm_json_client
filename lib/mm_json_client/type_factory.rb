@@ -50,7 +50,9 @@ module MmJsonClient
           type_def = type_definition(type_name)
           data.each do |attr_name, value|
             subtype = type_def[attr_name]
-            obj.send("#{attr_name}=", build_from_data(subtype, value))
+            if subtype then # ignore any types that we do not have in the definition
+              obj.send("#{attr_name}=", build_from_data(subtype, value))
+            end
           end
         end
       end
