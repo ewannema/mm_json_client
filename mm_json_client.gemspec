@@ -30,9 +30,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'simplecov'
   spec.add_development_dependency 'vcr'
   spec.add_development_dependency 'webmock'
-  # Wasabi requires httpi which requires rack which is pulling 2.0+ and breaks
-  # on < 2.2 Rubies. We will require a compatible rack for now and come back
-  # to check on https://github.com/bundler/bundler/pull/4650
   spec.add_development_dependency 'wasabi'
-  spec.add_development_dependency 'rack', '~>1.6'
+  spec.add_development_dependency 'rack'
 end
